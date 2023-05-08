@@ -1,15 +1,18 @@
 <script setup lang="ts">
-import EntryDetail from './components/EntryDetail.vue'
-import PersonalProfile from './components/PersonalProfile.vue'
-import StatsEntrys from './components/StatsEntrys.vue'
+import {ref} from 'vue'
+import EntryDetail from './template/EntryDetail.vue'
+import PersonalProfile from './template/PersonalProfile.vue'
+import StatsEntrys from './template/StatsEntrys.vue'
+
+const selectedItem = ref(0)
 </script>
 
 <template>
   <div class="app-main">
     <PersonalProfile/>
     <div>
-      <StatsEntrys/>
-      <EntryDetail/>
+      <StatsEntrys v-model:selectedItem="selectedItem"/>
+      <EntryDetail :selectedItem="selectedItem"/>
     </div>
   </div>
 </template>
