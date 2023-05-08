@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { TSSHeatMap } from '@/components';
 interface Props {
     selectedItem: number
 }
@@ -9,7 +10,10 @@ const props = withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-    <div class="entry-detail">{{ props.selectedItem }}</div>
+    <div class="entry-detail">
+        {{ props.selectedItem }}
+        <TSSHeatMap/>
+    </div>
 </template>
 
 <style scoped lang="scss">
