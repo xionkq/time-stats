@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { TSSHeatMap } from '@/components';
+import { computed } from '@vue/reactivity';
+import { useFetch } from '@vueuse/core'
+
 interface Props {
     selectedItem: number
 }
@@ -7,12 +10,22 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
     selectedItem: 0,
 })
+
+const url = 'http://localhost:5173/timeData'
+const { isFetching, error, data: timeData } = useFetch(url).get().json()
+
+const timeStatsData = computed(() => {
+    if (timeData.value && timeData.value?.data) {
+        return timeData.value?.data as Array<any>
+    }
+    return null
+})
 </script>
 
 <template>
     <div class="entry-detail">
         {{ props.selectedItem }}
-        <TSSHeatMap/>
+        <TSSHeatMap :time-stats-data="timeStatsData"/>
     </div>
 </template>
 

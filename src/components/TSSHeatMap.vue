@@ -1,14 +1,19 @@
 <script setup lang="ts">
 import { getCurrentInstance, onMounted, ref, watch } from 'vue'
 import * as echarts from 'echarts'
-import { useFetch } from '@vueuse/core'
+import { computed } from '@vue/reactivity';
 
+interface Props {
+    timeStatsData: Array<any> | null
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  timeStatsData: null,
+})
+
+const data = computed(() => props.timeStatsData)
 let heatMap = ref(null)
 let name = ref('热力图')
-
-const url = 'http://localhost:5173/timeData'
-
-const { isFetching, error, data: timeData } = useFetch(url)
 
 function initChart(time: any) {
   if (!heatMap.value) {
@@ -61,10 +66,9 @@ function initChart(time: any) {
   })
 }
 
-watch(isFetching, () => {
-  if (timeData.value) {
-    const d = JSON.parse(timeData.value.toString())    
-    initChart(d.data)
+watch(data, () => {  
+  if (data.value) {
+    initChart(data.value)
   }
 })
 </script>
