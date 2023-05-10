@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 8000",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "build-only": "vite build",
@@ -12,6 +12,7 @@
   "dependencies": {
     "@vueuse/core": "^10.1.2",
     "echarts": "^5.4.2",
+    "luxon": "^3.3.0",
     "naive-ui": "^2.34.3",
     "sass": "^1.62.1",
     "vue": "^3.2.47"

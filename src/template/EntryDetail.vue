@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { TSSHeatMap } from '@/components';
-import { computed } from '@vue/reactivity';
-import { useFetch } from '@vueuse/core'
+import { TSSHeatMap, TSSButton } from '@/components';
+import { Ref, computed, ref } from 'vue';
+import { useFetch } from '@vueuse/core';
+import { DateTime } from "luxon";
 
 interface Props {
     selectedItem: number
@@ -11,7 +12,8 @@ const props = withDefaults(defineProps<Props>(), {
     selectedItem: 0,
 })
 
-const url = 'http://localhost:5173/timeData'
+// ----- time stats data -----
+const url = 'http://localhost:8000/timeData'
 const { isFetching, error, data: timeData } = useFetch(url).get().json()
 
 const timeStatsData = computed(() => {
@@ -20,11 +22,30 @@ const timeStatsData = computed(() => {
     }
     return null
 })
+// ----- time stats data end -----
+
+// ----- clock in -----
+const isClocking = ref(false)
+const buttonLabel = computed(() => {
+    return isClocking.value ? 'end' : 'start'
+})
+
+const now = ref(DateTime.now().toFormat('y-MM-dd HH-mm-ss'))
+setInterval(() => {
+    now.value = DateTime.now().toFormat('y-MM-dd HH-mm-ss')
+}, 1000)
+
+function clockIn() {
+    isClocking.value = !isClocking.value
+}
+// ----- clock in end -----
 </script>
 
 <template>
     <div class="entry-detail">
         {{ props.selectedItem }}
+        {{ now }}
+        <TSSButton @click="clockIn">{{ buttonLabel }}</TSSButton>
         <TSSHeatMap :time-stats-data="timeStatsData"/>
     </div>
 </template>
