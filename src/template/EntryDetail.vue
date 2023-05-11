@@ -2,7 +2,7 @@
 import { TSSHeatMap, TSSButton } from '@/components';
 import { Ref, computed, ref } from 'vue';
 import { useFetch } from '@vueuse/core';
-import { DateTime } from "luxon";
+import { DateTime } from 'luxon';
 
 interface Props {
     selectedItem: number
@@ -43,9 +43,11 @@ function clockIn() {
 
 <template>
     <div class="entry-detail">
-        {{ props.selectedItem }}
-        {{ now }}
-        <TSSButton @click="clockIn">{{ buttonLabel }}</TSSButton>
+        <div class="info">
+            {{ props.selectedItem }}
+            {{ now }}
+            <TSSButton @click="clockIn">{{ buttonLabel }}</TSSButton>
+        </div>
         <TSSHeatMap :time-stats-data="timeStatsData"/>
     </div>
 </template>
@@ -55,9 +57,12 @@ function clockIn() {
     width: 900px;
     height: 600px;
     background-color: aquamarine;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 50px;
+
+    .info {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 50px;
+    }
 }
 </style>
