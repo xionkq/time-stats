@@ -54,8 +54,8 @@ function clockIn() {
 
 <style scoped lang="scss">
 .entry-detail {
-    width: 900px;
-    height: 600px;
+    width: 830px;
+    height: 900px;
     background-color: aquamarine;
 
     .info {

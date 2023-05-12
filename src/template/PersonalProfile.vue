@@ -14,8 +14,8 @@ import { UseNow } from '@vueuse/components'
 
 <style scoped lang="scss">
 .personal-profile {
-    width: 300px;
-    height: 1000px;
+    width: 370px;
+    height: 200px;
     background-color: antiquewhite;
 }
 </style>

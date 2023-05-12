@@ -33,8 +33,8 @@ const currentSelectedItem = computed({
 
 <style scoped lang="scss">
 .stats-entrys {
-    width: 900px;
-    height: 400px;
+    width: 370px;
+    height: 700px;
     background-color: wheat;
     display: flex;
     align-items: center;
