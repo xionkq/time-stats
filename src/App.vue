@@ -2,7 +2,6 @@
 import {ref} from 'vue'
 import StatsDetail from './template/StatsDetail.vue'
 import PersonalProfile from './template/PersonalProfile.vue'
-import StatsEntrys from './template/StatsEntrys.vue'
 import StatsList from './template/StatsList.vue'
 
 const selectedItem = ref(0)

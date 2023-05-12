@@ -27,7 +27,7 @@ const timeStatsData = computed(() => {
 // ----- clock in -----
 const isClocking = ref(false)
 const buttonLabel = computed(() => {
-    return isClocking.value ? 'end' : 'start'
+    return isClocking.value ? 'END' : 'START'
 })
 
 const now = ref(DateTime.now().toFormat('y-MM-dd HH-mm-ss'))
@@ -39,14 +39,22 @@ function clockIn() {
     isClocking.value = !isClocking.value
 }
 // ----- clock in end -----
+
+const lastChangeDate = ref('2022-01-07')
+const timerStartTime = ref('00:00:00')
+const timerEndTime = ref('00:00:00')
 </script>
 
 <template>
     <div class="entry-detail">
-        <div class="info">
-            {{ props.selectedItem }}
-            {{ now }}
+        <div class="stats-info">
             <TSSButton @click="clockIn">{{ buttonLabel }}</TSSButton>
+            {{ props.selectedItem }}({{ lastChangeDate }})
+        </div>
+        <div class="timer-box">
+            <div class="time">{{ timerStartTime }}</div>
+            ~
+            <div class="time">{{ timerEndTime }}</div>
         </div>
         <TSSHeatMap :time-stats-data="timeStatsData"/>
     </div>
@@ -56,13 +64,40 @@ function clockIn() {
 .entry-detail {
     width: 830px;
     height: 900px;
+    padding: 35px;
     background-color: aquamarine;
 
-    .info {
+    .stats-info {
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
         font-size: 50px;
+        width: 700px;
+        margin: 0 auto;
+
+        .tss-button {
+            width: 170px;
+            height: 100px;
+            font-size: 40px;
+        }
+    }
+
+    .timer-box {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 650px;
+        margin: 40px auto 70px;
+        font-size: 40px;
+
+        .time {
+            width: 280px;
+            height: 80px;
+            background-color: #D9D9D9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     }
 }
 </style>

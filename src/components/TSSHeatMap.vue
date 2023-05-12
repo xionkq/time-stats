@@ -75,7 +75,6 @@ watch(data, () => {
 
 <template>
   <div class="box">
-    <p>{{ name }}</p>
     <div ref="heatMap" class="about"></div>
   </div>
 </template>
