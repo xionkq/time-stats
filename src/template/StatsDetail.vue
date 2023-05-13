@@ -31,24 +31,38 @@ const buttonLabel = computed(() => {
 })
 
 const now = ref(DateTime.now().toFormat('y-MM-dd HH-mm-ss'))
-setInterval(() => {
-    now.value = DateTime.now().toFormat('y-MM-dd HH-mm-ss')
-}, 1000)
+const timer: Ref<NodeJS.Timer | null> = ref(null)
 
 function clockIn() {
     isClocking.value = !isClocking.value
+    if (isClocking.value) {
+        reset()
+        timerStartTime.value = DateTime.now().toFormat('HH:mm:ss')
+    timer.value = setInterval(() => {
+        timerEndTime.value = DateTime.now().toFormat('HH:mm:ss')
+    }, 1000)
+    } else {
+        if(timer.value) clearInterval(timer.value)
+    }
+    
 }
 // ----- clock in end -----
 
 const lastChangeDate = ref('2022-01-07')
 const timerStartTime = ref('00:00:00')
 const timerEndTime = ref('00:00:00')
+
+function reset() {
+    timerStartTime.value = '00:00:00'
+    timerEndTime.value = '00:00:00'
+}
 </script>
 
 <template>
     <div class="entry-detail">
         <div class="stats-info">
             <TSSButton @click="clockIn">{{ buttonLabel }}</TSSButton>
+            <TSSButton @click="reset" :disable="isClocking">reset</TSSButton>
             {{ props.selectedItem }}({{ lastChangeDate }})
         </div>
         <div class="timer-box">
