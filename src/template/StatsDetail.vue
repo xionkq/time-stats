@@ -3,6 +3,7 @@ import { TSSHeatMap, TSSButton } from '@/components';
 import { Ref, computed, ref } from 'vue';
 import { useFetch } from '@vueuse/core';
 import { DateTime } from 'luxon';
+import { uploadDateData, useStatsDateData } from '@/api/api';
 
 interface Props {
     selectedItem: number
@@ -13,15 +14,17 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 // ----- time stats data -----
-const url = 'http://localhost:8000/timeData'
-const { isFetching, error, data: timeData } = useFetch(url).get().json()
+// const url = 'http://localhost:8000/timeData'
+// const { isFetching, error, data: timeData } = useFetch(url).get().json()
 
-const timeStatsData = computed(() => {
-    if (timeData.value && timeData.value?.data) {
-        return timeData.value?.data as Array<any>
-    }
-    return null
-})
+// const timeStatsData = computed(() => {
+//     if (timeData.value && timeData.value?.data) {
+//         return timeData.value?.data as Array<any>
+//     }
+//     return null
+// })
+
+const { result: timeStatsData } = useStatsDateData()
 // ----- time stats data end -----
 
 // ----- clock in -----
@@ -37,24 +40,33 @@ function clockIn() {
     isClocking.value = !isClocking.value
     if (isClocking.value) {
         reset()
-        timerStartTime.value = DateTime.now().toFormat('HH:mm:ss')
+        timerStartTime.value = DateTime.now().toUnixInteger()
     timer.value = setInterval(() => {
-        timerEndTime.value = DateTime.now().toFormat('HH:mm:ss')
+        timerEndTime.value = DateTime.now().toUnixInteger()
     }, 1000)
     } else {
         if(timer.value) clearInterval(timer.value)
     }
-    
 }
 // ----- clock in end -----
 
 const lastChangeDate = ref('2022-01-07')
-const timerStartTime = ref('00:00:00')
-const timerEndTime = ref('00:00:00')
+const timerStartTime = ref(0)
+const timerEndTime = ref(0)
 
 function reset() {
-    timerStartTime.value = '00:00:00'
-    timerEndTime.value = '00:00:00'
+    timerStartTime.value = 0
+    timerEndTime.value = 0
+}
+
+function upload() {
+    uploadDateData({
+    _id: 2,
+    user_name: 'a',
+    date: DateTime.now().toUnixInteger(),
+    duration: timerEndTime.value - timerStartTime.value,
+    message: `${timerStartTime.value}~${timerEndTime.value}`,
+})
 }
 </script>
 
@@ -62,13 +74,13 @@ function reset() {
     <div class="entry-detail">
         <div class="stats-info">
             <TSSButton @click="clockIn">{{ buttonLabel }}</TSSButton>
-            <TSSButton @click="reset" :disable="isClocking">reset</TSSButton>
+            <TSSButton @click="upload" :disable="isClocking">upload</TSSButton>
             {{ props.selectedItem }}({{ lastChangeDate }})
         </div>
         <div class="timer-box">
-            <div class="time">{{ timerStartTime }}</div>
+            <div class="time">{{ DateTime.fromSeconds(timerStartTime).toFormat('HH:mm:ss') }}</div>
             ~
-            <div class="time">{{ timerEndTime }}</div>
+            <div class="time">{{ DateTime.fromSeconds(timerEndTime).toFormat('HH:mm:ss') }}</div>
         </div>
         <TSSHeatMap :time-stats-data="timeStatsData"/>
     </div>
