@@ -2,6 +2,7 @@
 import { getCurrentInstance, onMounted, ref, watch } from 'vue'
 import * as echarts from 'echarts'
 import { computed } from '@vue/reactivity';
+import { DateTime } from 'luxon'
 
 interface Props {
     timeStatsData: Array<any> | null
@@ -41,7 +42,7 @@ function initChart(time: any) {
         borderColor: '#fff'
       },
       cellSize: ['auto', 13],
-      range: ['2022-5-17', '2023-2-17'],
+      range: ['2022-5-17', DateTime.now().toFormat('y-MM-dd')],
       splitLine: true,
       dayLabel: {
         firstDay: 7,
@@ -67,7 +68,7 @@ function initChart(time: any) {
 }
 
 watch(data, () => {  
-  if (data.value) {
+  if (data.value) {    
     initChart(data.value)
   }
 })

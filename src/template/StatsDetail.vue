@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
 //     return null
 // })
 
-const { result: timeStatsData } = useStatsDateData()
+const { heatMapData: timeStatsData } = useStatsDateData()
 // ----- time stats data end -----
 
 // ----- clock in -----
@@ -61,7 +61,6 @@ function reset() {
 
 function upload() {
     uploadDateData({
-    _id: 2,
     user_name: 'a',
     date: DateTime.now().toUnixInteger(),
     duration: timerEndTime.value - timerStartTime.value,
