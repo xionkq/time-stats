@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref} from 'vue'
+import { ref } from 'vue'
 import StatsDetail from './template/StatsDetail.vue'
 import PersonalProfile from './template/PersonalProfile.vue'
 import StatsList from './template/StatsList.vue'
