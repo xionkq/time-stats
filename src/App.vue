@@ -4,7 +4,7 @@ import StatsDetail from './template/StatsDetail.vue'
 import PersonalProfile from './template/PersonalProfile.vue'
 import StatsList from './template/StatsList.vue'
 
-const selectedItem = ref(0)
+const selectedItem = ref(1)
 </script>
 
 <template>

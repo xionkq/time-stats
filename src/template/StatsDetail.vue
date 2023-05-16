@@ -14,16 +14,6 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 // ----- time stats data -----
-// const url = 'http://localhost:8000/timeData'
-// const { isFetching, error, data: timeData } = useFetch(url).get().json()
-
-// const timeStatsData = computed(() => {
-//     if (timeData.value && timeData.value?.data) {
-//         return timeData.value?.data as Array<any>
-//     }
-//     return null
-// })
-
 const { heatMapData: timeStatsData } = useStatsDateData()
 // ----- time stats data end -----
 
@@ -62,6 +52,7 @@ function reset() {
 function upload() {
     uploadDateData({
     user_name: 'a',
+    project_id: props.selectedItem,
     date: DateTime.now().toUnixInteger(),
     duration: timerEndTime.value - timerStartTime.value,
     message: `${timerStartTime.value}~${timerEndTime.value}`,
