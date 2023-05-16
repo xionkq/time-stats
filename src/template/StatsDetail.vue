@@ -55,7 +55,7 @@ function upload() {
     project_id: props.selectedItem,
     date: DateTime.now().toUnixInteger(),
     duration: timerEndTime.value - timerStartTime.value,
-    message: `${timerStartTime.value}~${timerEndTime.value}`,
+    message: `${DateTime.fromSeconds(timerStartTime.value).toFormat('HH:mm:ss')}~${DateTime.fromSeconds(timerEndTime.value).toFormat('HH:mm:ss')}`,
 })
 }
 </script>
