@@ -9,7 +9,7 @@ const timer = setInterval(() => {
 
 const hourTransformTurn = computed(() => {
     const hour = now.value.hour
-    return hour / 60
+    return hour / 12
 })
 
 const minuteTransformTurn = computed(() => {
@@ -23,6 +23,10 @@ const minuteTransformTurn = computed(() => {
         <div class="clock-box">
             <div class="hour-hand" :style="{ transform: `rotate(${hourTransformTurn}turn)` }"></div>
             <div class="minute-hand" :style="{ transform: `rotate(${minuteTransformTurn}turn)` }"></div>
+        </div>
+        <div class="now-time">
+            <div class="time">{{ now.toFormat('HH:mm:ss') }}</div>
+            <div class="date">{{ now.toFormat('y年M月dd日') }}</div>
         </div>
     </div>
 </template>
@@ -63,6 +67,23 @@ const minuteTransformTurn = computed(() => {
             left: 48px;
             transform-origin: bottom;
             
+        }
+    }
+
+    .now-time {
+        color: #D3CFC9;
+
+        .time {
+            font-size: 40px;
+            line-height: 43px;
+            font-family: Oxanium;
+        }
+
+        .date {
+            font-size: 20px;
+            line-height: 23px;
+            margin-top: 12px;
+            font-family: Inter;
         }
     }
 }

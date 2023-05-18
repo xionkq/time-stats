@@ -40,17 +40,18 @@ const currentSelectedItem = computed({
 
     .entry-item {
         width: 300px;
-        height: 90px;
-        border: 1px solid black;
-        border-radius: 16px;
+        height: 70px;
         display: flex;
         align-items: center;
-        justify-content: center;
         cursor: pointer;
-        margin-bottom: 35px;
+        margin-bottom: 16px;
+        font-size: 30px;
+        line-height: 38px;
+        padding: 16px;
+        color: #D3CFC9;
 
         &.selected {
-            background-color: rgb(68, 59, 132);
+            color: #ffffff;
         }
     }
 }
