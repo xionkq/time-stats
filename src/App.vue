@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import StatsDetail from './template/StatsDetail.vue'
-import PersonalProfile from './template/PersonalProfile.vue'
+import Clock from './template/Clock.vue'
 import StatsList from './template/StatsList.vue'
 
 const selectedItem = ref(1)
@@ -10,7 +10,7 @@ const selectedItem = ref(1)
 <template>
   <div class="app-main">
     <div class="left">
-      <PersonalProfile/>
+      <Clock/>
       <StatsList v-model:selectedItem="selectedItem"></StatsList>
     </div>
     <div class="right">

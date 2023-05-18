@@ -35,7 +35,6 @@ const currentSelectedItem = computed({
 .stats-list {
     width: 370px;
     height: 700px;
-    background-color: wheat;
     flex-wrap: wrap;
     padding: 35px;
 
