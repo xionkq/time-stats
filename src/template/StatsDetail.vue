@@ -2,7 +2,7 @@
 import { TSSHeatMap, TSSButton } from '@/components';
 import { Ref, computed, ref } from 'vue';
 import { useFetch } from '@vueuse/core';
-import { DateTime } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 import { uploadDateData, useStatsDateData } from '@/api/api';
 
 interface Props {
@@ -31,6 +31,7 @@ function clockIn() {
     if (isClocking.value) {
         reset()
         timerStartTime.value = DateTime.now().toUnixInteger()
+        timerEndTime.value = DateTime.now().toUnixInteger()
     timer.value = setInterval(() => {
         timerEndTime.value = DateTime.now().toUnixInteger()
     }, 1000)
@@ -40,9 +41,19 @@ function clockIn() {
 }
 // ----- clock in end -----
 
+function formatDuration(n: number) {
+    return n < 10 ? `0${n}` : `${n}`
+}
+
 const lastChangeDate = ref('2022-01-07')
 const timerStartTime = ref(0)
 const timerEndTime = ref(0)
+
+const durationStr = computed(() => {
+    const second = timerEndTime.value - timerStartTime.value
+    const dur = Duration.fromObject({ seconds: second })
+    return `${formatDuration(dur.hours)}:${formatDuration(dur.minutes)}:${formatDuration(dur.seconds)}`
+})
 
 function reset() {
     timerStartTime.value = 0
@@ -57,22 +68,30 @@ function upload() {
     duration: timerEndTime.value - timerStartTime.value,
     message: `${DateTime.fromSeconds(timerStartTime.value).toFormat('HH:mm:ss')}~${DateTime.fromSeconds(timerEndTime.value).toFormat('HH:mm:ss')}`,
 })
+
+
 }
 </script>
 
 <template>
     <div class="entry-detail">
         <div class="stats-info">
-            <TSSButton @click="clockIn">{{ buttonLabel }}</TSSButton>
-            <TSSButton @click="upload" :disable="isClocking">upload</TSSButton>
-            {{ props.selectedItem }}({{ lastChangeDate }})
+            <span>{{ props.selectedItem }}</span>
+            <span>{{ lastChangeDate }}</span>
         </div>
-        <div class="timer-box">
+        <div class="duration-box">
+            <div class="duration">{{ durationStr }}</div>
+            <div class="operation">
+                <TSSButton @click="clockIn">{{ buttonLabel }}</TSSButton>
+                <TSSButton @click="upload" :disable="isClocking">upload</TSSButton>
+            </div>
+        </div>
+        <!-- <div class="timer-box">
             <div class="time">{{ DateTime.fromSeconds(timerStartTime).toFormat('HH:mm:ss') }}</div>
             ~
             <div class="time">{{ DateTime.fromSeconds(timerEndTime).toFormat('HH:mm:ss') }}</div>
-        </div>
-        <TSSHeatMap :time-stats-data="timeStatsData"/>
+        </div> -->
+        <!-- <TSSHeatMap :time-stats-data="timeStatsData"/> -->
     </div>
 </template>
 
@@ -81,13 +100,13 @@ function upload() {
     width: 830px;
     height: 900px;
     padding: 35px;
-    background-color: aquamarine;
+    color: #D3CFC9;
 
     .stats-info {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        font-size: 50px;
+        font-size: 30px;
         width: 700px;
         margin: 0 auto;
 
@@ -113,6 +132,34 @@ function upload() {
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+    }
+
+    .duration-box {
+        margin-top: 100px;
+
+        .duration {
+            text-align: center;
+            font-size: 50px;
+            line-height: 60px;
+            font-family: Oxanium;
+        }
+
+        .operation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 40px;
+            
+
+            .tss-button {
+                margin-right: 16px;
+                font-size: 20px;
+
+                &:last-of-type {
+                    margin-right: 0;
+                }
+            }
         }
     }
 }

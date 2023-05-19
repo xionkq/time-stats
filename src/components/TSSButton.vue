@@ -16,9 +16,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 <style scoped lang="scss">
 .tss-button {
-    width: 100px;
-    height: 60px;
-    border-radius: 16px;
+    width: 95px;
+    height: 40px;
     background-color: rgb(113, 180, 106);
     display: flex;
     align-items: center;
