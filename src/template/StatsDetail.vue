@@ -82,8 +82,8 @@ function upload() {
         <div class="duration-box">
             <div class="duration">{{ durationStr }}</div>
             <div class="operation">
-                <TSSButton @click="clockIn">{{ buttonLabel }}</TSSButton>
-                <TSSButton @click="upload" :disable="isClocking">upload</TSSButton>
+                <TSSButton primary @click="clockIn">{{ buttonLabel }}</TSSButton>
+                <TSSButton info @click="upload" :disable="isClocking">upload</TSSButton>
             </div>
         </div>
         <!-- <div class="timer-box">
