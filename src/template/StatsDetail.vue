@@ -14,7 +14,27 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 // ----- time stats data -----
-const { heatMapData: timeStatsData } = useStatsDateData()
+const { result } = useStatsDateData()
+
+const heatMapData = computed(() => {
+        if (!result.value) {
+            return null
+        }
+        const map = new Map<string, Array<any>>()
+        result.value.filter((item) => {
+            return item.project_name === props.selectedProject
+        }).map((item) => {
+            const date = DateTime.fromSeconds(item.date).toFormat('y-MM-dd')
+            const duration = item.duration
+            const v = map.get(date)
+            if (v) {
+                map.set(date, [date, v[1] + duration])
+            } else {
+                map.set(date, [date, duration])
+            }
+        })
+        return Array.from(map.values())
+    })
 // ----- time stats data end -----
 
 // ----- clock in -----
