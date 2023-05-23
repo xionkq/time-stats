@@ -4,17 +4,17 @@ import StatsDetail from './template/StatsDetail.vue'
 import Clock from './template/Clock.vue'
 import StatsList from './template/StatsList.vue'
 
-const selectedItem = ref(1)
+const selectedProject = ref('')
 </script>
 
 <template>
   <div class="app-main">
     <div class="left">
       <Clock/>
-      <StatsList v-model:selectedItem="selectedItem"></StatsList>
+      <StatsList v-model:selectedProject="selectedProject"></StatsList>
     </div>
     <div class="right">
-      <StatsDetail :selectedItem="selectedItem"/>
+      <StatsDetail :selectedProject="selectedProject"/>
     </div>
   </div>
 </template>

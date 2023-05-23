@@ -23,6 +23,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path,
       },
+      "/project": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+        rewrite: (path) => path,
+      },
     },
   },
   base: './',

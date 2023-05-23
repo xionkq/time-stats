@@ -6,11 +6,11 @@ import { DateTime, Duration } from 'luxon';
 import { uploadDateData, useStatsDateData } from '@/api/api';
 
 interface Props {
-    selectedItem: number
+    selectedProject: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    selectedItem: 0,
+    selectedProject: '',
 })
 
 // ----- time stats data -----
@@ -63,7 +63,7 @@ function reset() {
 function upload() {
     uploadDateData({
     user_name: 'a',
-    project_id: props.selectedItem,
+    project_name: props.selectedProject,
     date: DateTime.now().toUnixInteger(),
     duration: timerEndTime.value - timerStartTime.value,
     message: `${DateTime.fromSeconds(timerStartTime.value).toFormat('HH:mm:ss')}~${DateTime.fromSeconds(timerEndTime.value).toFormat('HH:mm:ss')}`,
@@ -76,7 +76,7 @@ function upload() {
 <template>
     <div class="entry-detail">
         <div class="stats-info">
-            <span>{{ props.selectedItem }}</span>
+            <span>{{ props.selectedProject }}</span>
             <span>{{ lastChangeDate }}</span>
         </div>
         <div class="duration-box">

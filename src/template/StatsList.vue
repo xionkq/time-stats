@@ -1,32 +1,35 @@
 <script setup lang="ts">
+import { getProjectList } from '@/api/api';
 import { TSSButton } from '@/components'
 import { computed } from '@vue/reactivity';
 import { defineProps, defineEmits } from 'vue'
 
 interface Props {
-    selectedItem: number
+    selectedProject: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    selectedItem: 0,
+    selectedProject: '',
 })
 
-const emits = defineEmits(['update:selectedItem'])
+const emits = defineEmits(['update:selectedProject'])
 
-const currentSelectedItem = computed({
+const currentProject = computed({
     get() {
-        return props.selectedItem
+        return props.selectedProject
     },
-    set(v: Number) {
-        emits('update:selectedItem', v)
+    set(v: string) {
+        emits('update:selectedProject', v)
     }
 })
+
+const { result: projectList } = getProjectList()
 </script>
 
 <template>
     <div class="stats-list">
-       <div class="entry-item" v-for="i in 4" :class="{selected: i === currentSelectedItem}" @click="currentSelectedItem = i">
-        {{i}}
+       <div class="entry-item" v-for="item in projectList" :class="{selected: item.project_name === currentProject}" @click="currentProject = item.project_name">
+        {{ item.project_name }}
        </div>
     </div>
 </template>
