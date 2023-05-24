@@ -24,5 +24,6 @@ const selectedProject = ref('')
   width: 1200px;
   margin: 0 auto;
   display: flex;
+  border: 1px solid #525259;
 }
 </style>

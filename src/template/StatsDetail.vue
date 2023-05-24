@@ -16,35 +16,51 @@ const props = withDefaults(defineProps<Props>(), {
 // ----- time stats data -----
 const { result } = useStatsDateData()
 
-const heatMapData = computed(() => {
-        if (!result.value) {
-            return null
-        }
-        const map = new Map<string, Array<any>>()
-        result.value.filter((item) => {
-            return item.project_name === props.selectedProject
-        }).map((item) => {
-            const date = DateTime.fromSeconds(item.date).toFormat('y-MM-dd')
-            const duration = item.duration
-            const v = map.get(date)
-            if (v) {
-                map.set(date, [date, v[1] + duration])
-            } else {
-                map.set(date, [date, duration])
-            }
-        })
-        return Array.from(map.values())
+const currentProjectResult = computed(() => {
+    return result.value.filter((item) => {
+        return item.project_name === props.selectedProject
     })
+})
+
+const heatMapData = computed(() => {
+    if (!result.value) {
+        return null
+    }
+    const map = new Map<string, Array<any>>()
+    currentProjectResult.value.map((item) => {
+        const date = DateTime.fromSeconds(item.date).toFormat('y-MM-dd')
+        const duration = item.duration
+        const v = map.get(date)
+        if (v) {
+            map.set(date, [date, v[1] + duration])
+        } else {
+            map.set(date, [date, duration])
+        }
+    })
+    return Array.from(map.values())
+})
+
+const lastChangeTime = computed(() => {
+    let lastTime = 0
+    currentProjectResult.value.map((item) => {
+        if (item.date > lastTime) {
+            lastTime = item.date
+        }
+    })
+    return lastTime
+})
 // ----- time stats data end -----
 
 // ----- clock in -----
+const timerStartTime = ref(0)
+const timerEndTime = ref(0)
 const isClocking = ref(false)
+const now = ref(DateTime.now().toFormat('y-MM-dd HH-mm-ss'))
+const timer: Ref<NodeJS.Timer | null> = ref(null)
+
 const buttonLabel = computed(() => {
     return isClocking.value ? 'END' : 'START'
 })
-
-const now = ref(DateTime.now().toFormat('y-MM-dd HH-mm-ss'))
-const timer: Ref<NodeJS.Timer | null> = ref(null)
 
 function clockIn() {
     isClocking.value = !isClocking.value
@@ -61,20 +77,19 @@ function clockIn() {
 }
 // ----- clock in end -----
 
+// ----- duration -----
 function formatDuration(n: number) {
     return n < 10 ? `0${n}` : `${n}`
 }
-
-const lastChangeDate = ref('2022-01-07')
-const timerStartTime = ref(0)
-const timerEndTime = ref(0)
 
 const durationStr = computed(() => {
     const second = timerEndTime.value - timerStartTime.value
     const dur = Duration.fromObject({ seconds: second })
     return `${formatDuration(dur.hours)}:${formatDuration(dur.minutes)}:${formatDuration(dur.seconds)}`
 })
+// ----- duration end -----
 
+// ----- operation -----
 function reset() {
     timerStartTime.value = 0
     timerEndTime.value = 0
@@ -88,8 +103,7 @@ function upload() {
     duration: timerEndTime.value - timerStartTime.value,
     message: `${DateTime.fromSeconds(timerStartTime.value).toFormat('HH:mm:ss')}~${DateTime.fromSeconds(timerEndTime.value).toFormat('HH:mm:ss')}`,
 })
-
-
+// ----- operation end -----
 }
 </script>
 
@@ -97,7 +111,7 @@ function upload() {
     <div class="entry-detail">
         <div class="stats-info">
             <span>{{ props.selectedProject }}</span>
-            <span>{{ lastChangeDate }}</span>
+            <span>{{ DateTime.fromSeconds(lastChangeTime).toFormat('y-MM-dd') }}</span>
         </div>
         <div class="duration-box">
             <div class="duration">{{ durationStr }}</div>
@@ -121,6 +135,7 @@ function upload() {
     height: 900px;
     padding: 35px;
     color: #D3CFC9;
+    border-left: 1px solid #525259;
 
     .stats-info {
         display: flex;

@@ -40,6 +40,7 @@ const { result: projectList } = getProjectList()
     height: 700px;
     flex-wrap: wrap;
     padding: 35px;
+    border-top: 1px solid #525259;
 
     .entry-item {
         width: 300px;
