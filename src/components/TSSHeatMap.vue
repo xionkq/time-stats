@@ -1,77 +1,96 @@
 <script setup lang="ts">
-import { getCurrentInstance, onMounted, ref, watch } from 'vue'
-import * as echarts from 'echarts'
-import { computed } from '@vue/reactivity';
-import { DateTime } from 'luxon'
+import { getCurrentInstance, onMounted, ref, watch } from "vue";
+import * as echarts from "echarts";
+import { computed } from "vue";
+import { DateTime } from "luxon";
 
 interface Props {
-    timeStatsData: Array<any> | null
+  timeStatsData: Array<any> | null;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   timeStatsData: null,
-})
+});
 
-const data = computed(() => props.timeStatsData)
-let heatMap = ref(null)
-let name = ref('热力图')
+const data = computed(() => props.timeStatsData);
+const heatMap = ref(null);
+const name = ref("热力图");
 
 function initChart(time: any) {
   if (!heatMap.value) {
-    return
+    return;
   }
-  const myChart = echarts.init(heatMap.value)
+  const myChart = echarts.init(heatMap.value);
   myChart.setOption({
     tooltip: {
       formatter: function (params: any) {
-        return params.value[0] + ' : ' + params.value[1]
-      }
+        return params.value[0] + " : " + params.value[1];
+      },
     },
     visualMap: {
       show: false,
       min: 0,
       max: 5,
       inRange: {
-        color: ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127', '#196127']
-      }
+        color: [
+          "#ebedf0",
+          "#c6e48b",
+          "#7bc96f",
+          "#239a3b",
+          "#196127",
+          "#196127",
+        ],
+      },
     },
     calendar: {
       itemStyle: {
-        color: '#ccc',
+        color: "#ccc",
         borderWidth: 3,
-        borderColor: '#fff'
+        borderColor: "#fff",
       },
-      cellSize: ['auto', 13],
-      range: ['2022-5-17', DateTime.now().toFormat('y-MM-dd')],
+      cellSize: ["auto", 13],
+      range: ["2022-5-17", DateTime.now().toFormat("y-MM-dd")],
       splitLine: true,
       dayLabel: {
         firstDay: 7,
-        nameMap: 'ZH'
+        nameMap: "ZH",
       },
       monthLabel: {
-        nameMap: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'
-        ]
+        nameMap: [
+          "一月",
+          "二月",
+          "三月",
+          "四月",
+          "五月",
+          "六月",
+          "七月",
+          "八月",
+          "九月",
+          "十月",
+          "十一月",
+          "十二月",
+        ],
       },
       yearLabel: {
-        show: false
+        show: false,
       },
       silent: {
-        show: false
-      }
+        show: false,
+      },
     },
     series: {
-      type: 'heatmap',
-      coordinateSystem: 'calendar',
+      type: "heatmap",
+      coordinateSystem: "calendar",
       data: time,
-    }
-  })
+    },
+  });
 }
 
-watch(data, () => {  
-  if (data.value) {    
-    initChart(data.value)
+watch(data, () => {
+  if (data.value) {
+    initChart(data.value);
   }
-})
+});
 </script>
 
 <template>
@@ -79,7 +98,6 @@ watch(data, () => {
     <div ref="heatMap" class="about"></div>
   </div>
 </template>
-
 
 <style lang="scss" scoped>
 .box {

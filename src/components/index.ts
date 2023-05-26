@@ -1,7 +1,4 @@
-import TSSButton from './TSSButton.vue'
-import TSSHeatMap from './TSSHeatMap.vue'
+import TSSButton from "./TSSButton.vue";
+import TSSHeatMap from "./TSSHeatMap.vue";
 
-export {
-    TSSButton,
-    TSSHeatMap
-}
+export { TSSButton, TSSHeatMap };

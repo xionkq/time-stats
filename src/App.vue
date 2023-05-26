@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import StatsDetail from './template/StatsDetail.vue'
-import Clock from './template/Clock.vue'
-import StatsList from './template/StatsList.vue'
+import { ref } from "vue";
+import StatsDetail from "./template/StatsDetail.vue";
+import Clock from "./template/Clock.vue";
+import StatsList from "./template/StatsList.vue";
 
-const selectedProject = ref('')
+const selectedProject = ref("");
 </script>
 
 <template>
   <div class="app-main">
     <div class="left">
-      <Clock/>
+      <Clock />
       <StatsList v-model:selectedProject="selectedProject"></StatsList>
     </div>
     <div class="right">
-      <StatsDetail :selectedProject="selectedProject"/>
+      <StatsDetail :selectedProject="selectedProject" />
     </div>
   </div>
 </template>

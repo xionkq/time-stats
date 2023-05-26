@@ -1,62 +1,67 @@
 <script setup lang="ts">
-import { getProjectList } from '@/api/api';
-import { TSSButton } from '@/components'
-import { computed } from '@vue/reactivity';
-import { defineProps, defineEmits } from 'vue'
+import { getProjectList } from "@/api/api";
+import { TSSButton } from "@/components";
+import { computed } from "vue";
+import { defineProps, defineEmits } from "vue";
 
 interface Props {
-    selectedProject: string
+  selectedProject: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    selectedProject: '',
-})
+  selectedProject: "",
+});
 
-const emits = defineEmits(['update:selectedProject'])
+const emits = defineEmits(["update:selectedProject"]);
 
 const currentProject = computed({
-    get() {
-        return props.selectedProject
-    },
-    set(v: string) {
-        emits('update:selectedProject', v)
-    }
-})
+  get() {
+    return props.selectedProject;
+  },
+  set(v: string) {
+    emits("update:selectedProject", v);
+  },
+});
 
-const { result: projectList } = getProjectList()
+const { result: projectList } = getProjectList();
 </script>
 
 <template>
-    <div class="stats-list">
-       <div class="entry-item" v-for="item in projectList" :class="{selected: item.project_name === currentProject}" @click="currentProject = item.project_name">
-        {{ item.project_name }}
-       </div>
+  <div class="stats-list">
+    <div
+      class="entry-item"
+      v-for="item in projectList"
+      :class="{ selected: item.project_name === currentProject }"
+      @click="currentProject = item.project_name"
+    >
+      {{ item.project_name }}
     </div>
+  </div>
 </template>
 
 <style scoped lang="scss">
 .stats-list {
-    width: 370px;
-    height: 700px;
-    flex-wrap: wrap;
-    padding: 35px;
-    border-top: 1px solid #525259;
+  width: 370px;
+  height: 700px;
+  flex-wrap: wrap;
+  padding: 35px;
+  border-top: 1px solid #525259;
 
-    .entry-item {
-        width: 300px;
-        height: 70px;
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-        margin-bottom: 16px;
-        font-size: 30px;
-        line-height: 38px;
-        padding: 16px;
-        color: #D3CFC9;
+  .entry-item {
+    width: 300px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 16px;
+    font-size: 30px;
+    line-height: 38px;
+    padding: 16px;
+    color: #d3cfc9;
 
-        &.selected {
-            color: #ffffff;
-        }
+    &.selected {
+      color: #ffffff;
     }
+  }
 }
 </style>
