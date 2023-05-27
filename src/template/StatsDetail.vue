@@ -107,8 +107,8 @@ function upload() {
       "HH:mm:ss"
     )}~${DateTime.fromSeconds(timerEndTime.value).toFormat("HH:mm:ss")}`,
   });
-  // ----- operation end -----
 }
+// ----- operation end -----
 </script>
 
 <template>
