@@ -85,9 +85,7 @@ function formatDuration(n: number) {
 const durationStr = computed(() => {
   const second = timerEndTime.value - timerStartTime.value;
   const dur = Duration.fromObject({ seconds: second });
-  return `${formatDuration(dur.hours)}:${formatDuration(
-    dur.minutes
-  )}:${formatDuration(dur.seconds)}`;
+  return dur.toFormat("hh:mm:ss");
 });
 // ----- duration end -----
 
